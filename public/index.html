@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كاشف النطاقات</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>كاشف النطاقات</h1>
+        <p>دخل سمية ديال شي نطاق و شوف واش خاوي.</p>
+        <div class="input-group">
+            <input type="text" id="domainInput" placeholder="example.com" dir="ltr">
+            <button id="checkButton">قلّب</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const domainInput = document.getElementById('domainInput');
+        const checkButton = document.getElementById('checkButton');
+        const resultDiv = document.getElementById('result');
+
+        const checkDomain = async () => {
+            const domain = domainInput.value.trim();
+            if (!domain) {
+                resultDiv.textContent = 'كتب شي نطاق بعدا!';
+                resultDiv.className = 'error';
+                return;
+            }
+
+            resultDiv.textContent = 'كانقلّب...';
+            resultDiv.className = 'checking';
+
+            const response = await fetch(`/api/check?domain=${domain}`);
+            const data = await response.json();
+
+            if (data.status === 'available') {
+                resultDiv.textContent = `مبروك! "${data.domain}" خاوي!`;
+                resultDiv.className = 'available';
+            } else {
+                resultDiv.textContent = `للأسف، "${data.domain}" ديجا عامر.`;
+                resultDiv.className = 'registered';
+            }
+        };
+
+        checkButton.addEventListener('click', checkDomain);
+        domainInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                checkDomain();
+            }
+        });
+    </script>
+</body>
+</html>
