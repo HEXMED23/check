@@ -1,0 +1,8 @@
+{
+  "name": "domain-checker-king",
+  "version": "1.0.0",
+  "description": "Project for my master, Mohamed",
+  "dependencies": {
+    "whois-json": "^2.0.4"
+  }
+}
